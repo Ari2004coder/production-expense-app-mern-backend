@@ -28,9 +28,10 @@ const getAllTransaction=async(req,res)=>{
 }
 const getAllTransactionforCard= async (req,res)=>{
     try {
-        const {frequency}=req.body;
+        const {frequency,selectedDate}=req.body;
               
-        const transaction=await transactionModel.find({userid:req.body.userid,  ...(frequency!='custom'?{date:{
+        const transaction=await transactionModel.find({userid:req.body.userid,  
+            ...(frequency!='custom'?{date:{
             $gt:moment().subtract(Number(frequency),'d').toDate(),
           }}:{
             date:{
@@ -38,7 +39,7 @@ const getAllTransactionforCard= async (req,res)=>{
                 $lte:selectedDate[1]
           }
           }) , });
-        console.log(moment().year(date).endOf('year').toDate());
+       
         
        res.status(200).json(transaction)
     } catch (error) {
