@@ -30,10 +30,10 @@ app.use('/api/v1/transactions',require('./routes/transaction-routes'))
 
 
 //static files
-app.use(express.static(path.join(__dirname,'./client/dist')))
-app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname,'./client/dist/index.html'))
-})
+// app.use(express.static(path.join(__dirname,'./client/dist')))
+// app.get('*',(req,res)=>{
+//     res.sendFile(path.join(__dirname,'./client/dist/index.html'))
+// })
 
 //port
 const PORT=8000||process.env.PORT;
