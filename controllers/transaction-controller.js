@@ -26,15 +26,18 @@ const getAllTransaction=async(req,res)=>{
         })
     }
 }
-const getAllTransactionMonth= async (req,res)=>{
+const getAllTransactionforCard= async (req,res)=>{
     try {
-        const {date}=req.body;
-              const startmonth=moment().month(date).startOf('month').toDate();
-              const endmonth=moment().month(date).endOf('month').toDate();
-        const transaction=await transactionModel.find({userid:req.body.userid,date:{
-             $gte:startmonth,
-             $lte:endmonth
-        }});
+        const {frequency}=req.body;
+              
+        const transaction=await transactionModel.find({userid:req.body.userid,  ...(frequency!='custom'?{date:{
+            $gt:moment().subtract(Number(frequency),'d').toDate(),
+          }}:{
+            date:{
+                $gte:selectedDate[0],
+                $lte:selectedDate[1]
+          }
+          }) , });
         console.log(moment().year(date).endOf('year').toDate());
         
        res.status(200).json(transaction)
@@ -104,4 +107,4 @@ const updateTransaction=async (req,res)=>{
         res.status(500).json(error)
     }
 }
-module.exports={getAllTransaction,addTransaction,getAllTransactionMonth,deleteTransaction,getAllTransactionYearly,updateTransaction}
+module.exports={getAllTransaction,addTransaction,getAllTransactionforCard,deleteTransaction,getAllTransactionYearly,updateTransaction}
